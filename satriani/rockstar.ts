@@ -7,7 +7,7 @@ var watch = process.argv.filter(x => x.toLowerCase() === "--watch").length > 0;
 
 function execute() {
     var rockstar = new satriani.Interpreter();
-    fs.readFile(sourceFilePath, 'utf8', (err, data) => {
+    fs.readFile(sourceFilePath, 'utf8', (err: any, data: any) => {
         if (err) throw err;
         try {
             let tree = rockstar.parse(data);
@@ -15,7 +15,7 @@ function execute() {
             let output = console.log;
             let result = rockstar.run(tree, input, output)
             console.log(result ? result : "(program returned no output)");
-        } catch (e) {
+        } catch (e: any) {
             if (e.location && e.location.start) {
                 let lines = data.split(/\n/);
                 console.log(lines[e.location.start.line - 1]);
