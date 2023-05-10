@@ -2,6 +2,7 @@ import parser from './satriani.parser.js';
 import interpreter from './satriani.interpreter.js';
 //import { saveRockENV } from 'src/lib/rockUtils.js';
 import { saveRockENV } from './../../src/lib/rockUtils.js';
+import logger from '#main/lib/logger';
 
 class Interpreter {
     public run(program: any, input: any, output: any, id: number) {
@@ -11,7 +12,7 @@ class Interpreter {
             env.output = output || console.log;
             env.input = input || (() => "");
             const ranProgram =  env.run(program);
-            console.log("full env.log", env.log);
+            logger.debug("full env.log", JSON.stringify(env.log));
             saveRockENV(env, id);
             return ranProgram;
     }
@@ -44,7 +45,7 @@ class Environment extends interpreter.Environment {
                 //check the kind of index and create a blank array or dictonairy
                 newVar = {}
             } else {
-                console.log("this.log["+name+"]", this.log[name])
+                logger.debug("this.log["+name+"]", JSON.stringify(this.log[name]))
                 newVar = structuredClone(this.log[name][this.log[name].length -1]);
             }
             if (typeof(newVar) == "undefined") {
@@ -55,7 +56,7 @@ class Environment extends interpreter.Environment {
             //@ts-expect-error 
             this.log[name].push(newVar);
         }
-        console.log("this.log", this.log)
+        logger.debug("this.log", JSON.stringify(this.log))
         super.assign(name, value, index, local);
     }
 }
